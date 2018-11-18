@@ -58,6 +58,28 @@ class Tarefa {
             return 'erro ' . $ex->getMessage();
         }
     }
+/**
+ * Query para usar na tabela de consulta, funcionalidade de agrupamento [ainda não implementado]
+ * GROUP BY t.idStatus ORDER BY t.idStatus
+ * @param type $where
+ * @param type $groupBy
+ * @return type
+ */
+    public function querySelectGroupBy($where,$groupBy) {
+        try {
+            $cst = $this->con->conectar()->prepare(""
+                    . "SELECT t.*,p.projeto,COUNT(t.idTarefa) "
+                    . "FROM `tarefa` as t "
+                    . "INNER JOIN projeto as p on t.idProjeto= p.idProjeto"
+                    .$where
+                    . $groupBy.";");
+            $cst->execute();
+            return $cst->fetchAll();
+        } catch (PDOException $ex) {
+            return 'erro ' . $ex->getMessage();
+        }
+        
+    }
 
     public function queryInsert($dados) {
 
